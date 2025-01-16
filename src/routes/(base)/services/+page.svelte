@@ -1,21 +1,9 @@
 <script>
-    const services = [
-        {
-            name: '123',
-            description: '123',
-            price: '1000'
-        },
-        {
-            name: '123',
-            description: '123',
-            price: '1000'
-        },
-        {
-            name: '123',
-            description: '123',
-            price: '1000'
-        },
-    ]
+
+    const {data} = $props();
+
+    let services = data.services;
+
 </script>
 <div class="container mx-auto mt-4">
     <table class="table-auto w-full">

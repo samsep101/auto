@@ -17,7 +17,7 @@
         };
 
         authStore.doLogin(body).then(() => {
-            goto('/');
+            goto('/admin');
         });
     }
 

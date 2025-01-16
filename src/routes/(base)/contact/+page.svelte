@@ -2,6 +2,24 @@
     import Geo from '$lib/images/geo.png';
     import Time from '$lib/images/time.png';
     import Phone from '$lib/images/phone.png';
+    import {PUBLIC_BACKEND_URL} from "$env/static/public";
+
+
+
+    const send = function() {
+        const data = {
+            name: this.name.value,
+            questions: this.question.value,
+            email: this.email.value
+        }
+        fetch(PUBLIC_BACKEND_URL + '/send-question', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
 
 </script>
 <div class="map">
@@ -40,11 +58,55 @@
     </div>
 </div>
 
-<form>
+<form onsubmit={send}>
     <h6>Остались вопросы? Задайте их нам</h6>
-    <input type="text" placeholder="Введите ваше имя">
-    <input type="text" placeholder="Введите ваш email">
-    <input type="texts" placeholder="Введите ваше сообщение">
-    <button>Отправить</button>
+    <input type="text" name="name" placeholder="Введите ваше имя">
+    <input type="text" name="email" placeholder="Введите ваш email">
+    <input type="text" name="question" placeholder="Введите ваше сообщение">
+    <button type="submit">Отправить</button>
 </form>
 
+<style>
+    form button{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 33px;
+        width: 174px;
+        height: 42px;
+        color: white;
+        background-color: #4A77BC;
+        font-size: 20px;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 400;
+        border: navy;
+    }
+    form input:not(:last-of-type){
+        width: 524px;
+        height: 42px;
+        color: white;
+        background-color: #4A77BC;
+        font-size: 20px;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 400;
+        border: navy;
+        margin-left: 48px;
+    }
+    ::placeholder {
+        color: white;
+        padding-left:68px;
+    }
+    form input:last-of-type {
+
+        width: 1103px;
+        height: 94px;
+        margin-top: 24px;
+        margin-left: 48px;
+        color: white;
+        background-color: #4A77BC;
+        font-size: 20px;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 400;
+        border: navy;
+    }
+</style>

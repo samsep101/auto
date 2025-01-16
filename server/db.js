@@ -4,6 +4,9 @@ const sequelize = new Sequelize({
     storage: "bd.sqlite",
 });
 
+
+
+
 const User = sequelize.define('User', {
         id: {
             type: DataTypes.INTEGER,
@@ -57,14 +60,14 @@ const Reviews = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false, // Добавлено ограничение not null
         },
-        number: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true,
-            validate: {
-                len: [1, 11], // Валидация формата number с помощью Sequelize
-            }
-        },
+        // number: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     unique: true,
+        //     validate: {
+        //         len: [1, 11], // Валидация формата number с помощью Sequelize
+        //     }
+        // },
         text: {
             type: DataTypes.STRING,
             validate: {
@@ -89,10 +92,10 @@ const Orders = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false, // Добавлено ограничение not null
         },
-        date: DataTypes.STRING,
-        time: DataTypes.STRING,
-        brand: DataTypes.STRING,
-        desscription: DataTypes.STRING,
+        phone: DataTypes.STRING,
+        // time: DataTypes.STRING,
+        // brand: DataTypes.STRING,
+        description: DataTypes.STRING,
     },
     {
         timestamps: false,
@@ -151,10 +154,17 @@ const Supplier = sequelize.define('Supplier', {
     name: { type: DataTypes.STRING, allowNull: false },
     contact: { type: DataTypes.STRING },
 });
+
+
+
 Product.belongsTo(Category);
 Product.belongsTo(Supplier);
 Category.hasMany(Product);
 Supplier.hasMany(Product);
+
+
+
+
 
 module.exports = {
     sequelize,
@@ -167,5 +177,4 @@ module.exports = {
     User,
     Servieos,
     Orders,
-
 }

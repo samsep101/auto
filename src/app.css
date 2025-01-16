@@ -161,15 +161,11 @@ difference p{
 
 
 footer{
-    height: 301px;
-    margin-top: 90px;
     background-color: #2A348F;
 }
 .foot{
-    max-width: 1200px;
     display: flex;
     justify-content: space-between;
-    margin: 0 auto;
     padding-top: 50px;
 }
 .logos{
@@ -237,46 +233,4 @@ h6{
     padding-top: 29px;
     padding-bottom: 37px;
     margin-bottom: 0;
-}
-form button{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 33px;
-    width: 174px;
-    height: 42px;
-    color: white;
-    background-color: #4A77BC;
-    font-size: 20px;
-    font-family: 'Noto Sans SC', sans-serif;
-    font-weight: 400;
-    border: navy;
-}
-form input:not(:last-of-type){
-    width: 524px;
-    height: 42px;
-    color: white;
-    background-color: #4A77BC;
-    font-size: 20px;
-    font-family: 'Noto Sans SC', sans-serif;
-    font-weight: 400;
-    border: navy;
-    margin-left: 48px;
-}
-::placeholder {
-    color: white;
-    padding-left:68px;
-}
-form input:last-of-type {
-
-    width: 1103px;
-    height: 94px;
-    margin-top: 24px;
-    margin-left: 48px;
-    color: white;
-    background-color: #4A77BC;
-    font-size: 20px;
-    font-family: 'Noto Sans SC', sans-serif;
-    font-weight: 400;
-    border: navy;
 }

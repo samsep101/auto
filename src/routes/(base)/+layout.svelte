@@ -11,7 +11,7 @@
 <div class="wrapper">
 	<header class="container mx-auto">
 		<a href="">
-			<img src={Logo} />
+			<img src={Logo} width="100px" />
 		</a>
 		<div class="nav">
 			<ul>
@@ -19,12 +19,12 @@
 				<NavigationLink path="/about" name="О нас" />
 				<NavigationLink path="/services" name="Услуги" />
 				<NavigationLink path="/blog" name="Блог" />
-				<NavigationLink path="/feeds" name="Отзывы" />
+				<NavigationLink path="/reviews" name="Отзывы" />
 				<NavigationLink path="/contact" name="Контакты" />
 			</ul>
 		</div>
 		<a href="/admin">
-			<img src={Gear}>
+			<img src={Gear} width="25px">
 		</a>
 	</header>
 
@@ -33,7 +33,7 @@
 	</main>
 
 	<footer>
-		<div class="foot">
+		<div class="foot container mx-auto">
 			<div class="logos">
 				<img src={Logo}>
 				<p>Автомастерская ТехноАвто предлагает высококачественные услуги по ремонту и техническому обслуживанию автомобилей. </p>
