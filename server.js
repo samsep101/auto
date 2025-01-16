@@ -12,163 +12,6 @@ const port = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "bd.sqlite",
-});
-
-const User = sequelize.define('User', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  login: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-},
-  
-{ 
-  timestamps: false, 
-},
-);
-
-const Servieos = sequelize.define(
-  "Servieos",
-  {
-      id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-          },
-    heading: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      },
-    desscription: DataTypes.STRING,
-    price: DataTypes.STRING,
-  },
-  {
-    timestamps: false,
-  }
-);
-
-const Reviews = sequelize.define(
-  "Reviews",
-  {
-      id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-          },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false, // Добавлено ограничение not null
-      },
-    number: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true,
-      validate: {
-          len: [1, 11], // Валидация формата number с помощью Sequelize
-        }
-    },
-    text: {
-      type: DataTypes.STRING,
-      validate: {
-          len: [5, 10000], // Валидация длины имени
-        },
-      },
-  },
-  {
-    timestamps: false,
-  }
-);
-
-const Orders = sequelize.define(
-  "Orders",
-  {
-      id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-          },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false, // Добавлено ограничение not null
-      },
-    date: DataTypes.STRING,
-    time: DataTypes.STRING,
-    brand: DataTypes.STRING,
-    desscription: DataTypes.STRING,
-  },
-  {
-    timestamps: false,
-  }
-);
-
-
-const Blog = sequelize.define(
-  "Blog",
-  {
-      id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-          },
-    heading: {
-      type: DataTypes.STRING,
-      allowNull: false, // Добавлено ограничение not null
-      },
-    desscription: DataTypes.STRING,
-    photo: DataTypes.STRING,
-  },
-  {
-    timestamps: false,
-  }
-);
-
-const Communication = sequelize.define(
-  "Communication",
-  {
-      id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true,
-          },
-    name: {
-      type: DataTypes.STRING,
-      },
-    email: DataTypes.STRING,
-    questions: DataTypes.STRING,
-  },
-  {
-    timestamps: false,
-  }
-);
-
-
-const Product = sequelize.define('Product', {
-  name: { type: DataTypes.STRING, allowNull: false },
-  price: { type: DataTypes.FLOAT, allowNull: false },
-});
-const Category = sequelize.define('Category', {
-  name: { type: DataTypes.STRING, allowNull: false },
-});
-const Supplier = sequelize.define('Supplier', {
-  name: { type: DataTypes.STRING, allowNull: false },
-  contact: { type: DataTypes.STRING },
-});
-Product.belongsTo(Category);
-Product.belongsTo(Supplier);
-Category.hasMany(Product);
-Supplier.hasMany(Product);
-
 
 async function run() {
   try {
@@ -183,12 +26,12 @@ async function run() {
 
      const categoryl = await Category.create({ name: 'иномарка' });
      const category2 = await Category.create({ name: 'отечественные' });
-   
+
      const supplier1 = await Supplier.create({ name: 'TechCorp', contact: 'avto@example.com' });
      const supplier2 = await Supplier.create({ name: 'BookStore', contact: 'contact@f.com' });
-   
+
      await Product.create({ name: 'Техническое обслуживание', price: 1209.99, CategoryId: categoryl.id, SupplierId: supplier1.id });
-     await Product.create({ name: 'Замена масла', price: 799.49, CategoryId: category2.id, SupplierId: supplier1.id }); 
+      await Product.create({name: 'Замена масла', price: 799.49, CategoryId: category2.id, SupplierId: supplier1.id});
 
 
 } catch (error) {
@@ -282,7 +125,7 @@ app.post('/add-product', express.urlencoded({ extended: true }), async (req, res
   });
       res.redirect('/');
     } catch (error) {
-      console.error('Error deleting product:', error); 
+      console.error('Error deleting product:', error);
       res.status(508).send('Internal Server Error');
 }
 });
@@ -293,21 +136,21 @@ app.post('/add-product', express.urlencoded({ extended: true }), async (req, res
       const { name, price, categoryId, supplierId } = req.body;
 
       await Product. update(
-        { name, price, CategoryId: categoryId, SupplierId: supplierId }, 
+          {name, price, CategoryId: categoryId, SupplierId: supplierId},
         { where: { id: productid } }
       );
 
       res.redirect('/');
   } catch (error) {
-      console.error( 'Error updating product:', error); 
+        console.error('Error updating product:', error);
       res.status(580).send('Internal Server Error');
   }
   });
 
   app.use(express.urlencoded({ extended: true })); // Обработка данных формы
   app.use(express.json()); // Обработка JSON
-  
-  // для сессий
+
+// для сессий
   app.use(session({
       secret: 'your_secret_key',
       resave: false,
@@ -379,6 +222,7 @@ try {
 }
 });
 
+
 // Страница личного кабинета (требует аутентификации)
 app.get('/add-product', requireAuth, (req, res) => {
   res.render('edit-product', { login: req.session.login });
@@ -386,10 +230,10 @@ app.get('/add-product', requireAuth, (req, res) => {
   app.listen(port, () => {
     console.log(`Сервер запущен на порту http://localhost:${port}`);
   });
-  
 
 
 
 
 
-  
+
+
