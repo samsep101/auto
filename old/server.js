@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
-const { Sequelize, DataTypes } = require('sequelize');
 const ejs = require('ejs');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const {sequelize, Blog, Category, Supplier, User,
+    Product, Communication, Orders, Reviews, Servieos} = require('./db')
+
 
 const app = express();
 const port = 3000;
