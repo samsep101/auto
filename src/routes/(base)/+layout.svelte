@@ -3,9 +3,12 @@
 	import Logo from '$lib/images/logo.png';
 	import Gear from '$lib/images/gear.png'
 	import NavigationLink from "$components/NavigationLink.svelte";
+	import authStore from '$modules/auth/index.svelte';
 
 	let {children} = $props();
 
+
+	const isAdmin = $derived(authStore.isAuthorized)
 </script>
 
 <div class="wrapper">
@@ -23,9 +26,11 @@
 				<NavigationLink path="/contact" name="Контакты" />
 			</ul>
 		</div>
-		<a href="/admin">
-			<img src={Gear} width="25px">
-		</a>
+		{#if isAdmin}
+			<a href="/admin">
+				<img src={Gear} width="25px">
+			</a>
+		{/if}
 	</header>
 
 	<main>

@@ -60,6 +60,11 @@ const doLogout = () => {
 
 
 const load = (jwt: string) => {
+    console.log(jwt, Boolean(jwt))
+    if (!Boolean(jwt))
+        return false;
+
+
     store = {
         token: jwt,
     };
