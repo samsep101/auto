@@ -1,12 +1,36 @@
-<script>
+<script lang="ts">
 
+
+    import {goto} from "$app/navigation";
+    import {fetchServices, deleteService, deleteBlog, fetchBlogs} from "$lib/api";
 
     let {data} = $props();
 
     let questions = data.questions;
     let orders = data.orders;
 
-    let services = data.services;
+
+    let blogs = $state(data.blogs);
+
+    let services = $state(data.services);
+
+
+    const onDelete = async (id: string) => {
+        await deleteService(id);
+
+        services = await fetchServices();
+        // goto(`/admin/service/${id}`)
+    }
+
+    const onDeleteBlog = async (id: string) => {
+        await deleteBlog(id);
+
+        blogs = await fetchBlogs();
+        // goto(`/admin/service/${id}`)
+    }
+
+
+
 </script>
 
 
@@ -44,16 +68,24 @@
                         <td class="p-2 text-center border-b-2 border-b-gray-200">
                             {service.price}
                         </td>
-                        <td class="bg-black text-center">
-                            <button class="w-[80%] text-white bg-blue-400 p-1">
-                                Удалить
-                            </button>
+                        <td class="bg-black  w-[20%] text-center">
+                            <div class="flex  flex-row justify-around">
+                                <button onclick={() => goto(`/admin/service/${service.id}`)} class="text-white bg-blue-400 p-1">
+                                    Редактировать
+                                </button>
+                                <button onclick={onDelete(service.id)} class="text-white bg-blue-400 p-1">
+                                    Удалить
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 {/each}
                 </tbody>
 
             </table>
+            <button onclick={() => goto(`/admin/service/`)} class="text-white bg-blue-400 p-1">
+                Добавить
+            </button>
         </section>
         <section class="mb-5">
             <h3 class="mb-3">
@@ -130,16 +162,57 @@
 
             </table>
         </section>
+
+        <section>
+            <h3 class="mb-3">
+                Просмотр блогов
+            </h3>
+
+            <table class="table-auto w-full">
+                <thead class="bg-blue-900">
+                <tr class="p-2">
+                    <td class="p-2 text-center">
+                        Название
+                    </td>
+                    <td class="p-2 text-center">
+                        Описание
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {#each blogs as service}
+                    <tr class="bg-white text-black even:bg-gray-50 border-b-2 border-b-gray-200">
+                        <td class="p-2 text-center">
+                            {service.heading}
+                        </td>
+                        <td class="p-2 text-center">
+                            {service.description}
+                        </td>
+                        <td class="bg-black  w-[20%] text-center">
+                            <div class="flex  flex-row justify-around">
+                                <button onclick={() => goto(`/admin/blog/${service.id}`)} class="text-white bg-blue-400 p-1">
+                                    Редактировать
+                                </button>
+                                <button onclick={onDeleteBlog(service.id)} class="text-white bg-blue-400 p-1">
+                                    Удалить
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {/each}
+                </tbody>
+            </table>
+
+            <button onclick={() => goto(`/admin/blog/`)} class="text-white bg-blue-400 p-1">
+                Добавить
+            </button>
+        </section>
     </div>
 </div>
 
 <style>
-    aside {
-        @apply flex flex-col
-
-    }
-
-    .tabs-head--item-active {
-        @apply bg-blue-400
+    input {
+        color: black;
     }
 </style>

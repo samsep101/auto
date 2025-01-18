@@ -1,4 +1,5 @@
-import {fetchServices, fetchReviews, fetchQuestions, fetchOrders} from "$lib/api";
+import {fetchServices, fetchReviews,
+    fetchQuestions, fetchOrders, fetchBlogs} from "$lib/api";
 
 
 
@@ -11,5 +12,6 @@ export  const load = async () => {
         services: await fetchServices(),
         questions: await fetchQuestions(),
         orders: await fetchOrders(),
+        blogs: await fetchBlogs()
     }
 }

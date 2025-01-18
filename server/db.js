@@ -1,9 +1,9 @@
 const {Sequelize, DataTypes} = require("sequelize");
+
 const sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "bd.sqlite",
 });
-
 
 
 
@@ -28,25 +28,25 @@ const User = sequelize.define('User', {
     },
 );
 
-const Servieos = sequelize.define(
-    "Servieos",
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        heading: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        desscription: DataTypes.STRING,
-        price: DataTypes.STRING,
-    },
-    {
-        timestamps: false,
-    }
-);
+// const Servieos = sequelize.define(
+//     "Servieos",
+//     {
+//         id: {
+//             type: DataTypes.INTEGER,
+//             autoIncrement: true,
+//             primaryKey: true,
+//         },
+//         heading: {
+//             type: DataTypes.STRING,
+//             allowNull: false,
+//         },
+//         desscription: DataTypes.STRING,
+//         price: DataTypes.STRING,
+//     },
+//     {
+//         timestamps: false,
+//     }
+// );
 
 const Reviews = sequelize.define(
     "Reviews",
@@ -115,8 +115,8 @@ const Blog = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false, // Добавлено ограничение not null
         },
-        desscription: DataTypes.STRING,
-        photo: DataTypes.STRING,
+        description: DataTypes.STRING,
+        // photo: DataTypes.STRING,
     },
     {
         timestamps: false,
@@ -145,22 +145,24 @@ const Communication = sequelize.define(
 
 const Product = sequelize.define('Product', {
     name: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.STRING, allowNull: true },
     price: { type: DataTypes.FLOAT, allowNull: false },
 });
-const Category = sequelize.define('Category', {
-    name: { type: DataTypes.STRING, allowNull: false },
-});
-const Supplier = sequelize.define('Supplier', {
-    name: { type: DataTypes.STRING, allowNull: false },
-    contact: { type: DataTypes.STRING },
-});
 
-
-
-Product.belongsTo(Category);
-Product.belongsTo(Supplier);
-Category.hasMany(Product);
-Supplier.hasMany(Product);
+// const Category = sequelize.define('Category', {
+//     name: { type: DataTypes.STRING, allowNull: false },
+// });
+// const Supplier = sequelize.define('Supplier', {
+//     name: { type: DataTypes.STRING, allowNull: false },
+//     contact: { type: DataTypes.STRING },
+// });
+//
+//
+//
+// Product.belongsTo(Category);
+// Product.belongsTo(Supplier);
+// Category.hasMany(Product);
+// Supplier.hasMany(Product);
 
 
 
@@ -169,12 +171,12 @@ Supplier.hasMany(Product);
 module.exports = {
     sequelize,
     Product,
-    Category,
-    Supplier,
+    // Category,
+    // Supplier,
     Communication,
     Blog,
     Reviews,
     User,
-    Servieos,
+    // Servieos,
     Orders,
 }

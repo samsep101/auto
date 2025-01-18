@@ -6,10 +6,9 @@ const cors = require('cors');
 const validator = require('validatorjs');
 
 const {
-    sequelize, Blog, Category, Supplier, User,
-    Product, Communication, Orders, Reviews, Servieos,
-} = require('./db')
-
+    sequelize, Blog, User,
+    Product, Communication, Orders, Reviews,
+} = require('./db');
 
 
 
@@ -39,11 +38,25 @@ if (isPull)
     run()
 
 
+const doHandler = (callback) => {
+
+    return async (request, response) => {
+        try {
+            return await callback(request, response)
+        } catch (e) {
+            console.error('Произошла ошибка', e);
+
+
+            return response.sendStatus(500);
+        }
+    }
+}
+
 
 const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 app.use(express.urlencoded({extended: true})); // Обработка данных формы
 
 app.use((err, req, res, next) => {
@@ -53,95 +66,103 @@ app.use((err, req, res, next) => {
 
 const port = 3000;
 
+//
+// app.post('/update/:id', async (req, res) => {
+//     try {
+//         const productId = req.params.id;
+//         const product = await Product.findByPk(productId, {
+//             include: [Category, Supplier],
+//         });
+//         const categories = await Category.findAll();
+//         const suppliers = await Supplier.findAl1();
+//         res.render('edit-product', {product, categories, suppliers});
+//     } catch (error) {
+//         console.error('Error fetching product for edit:', error);
+//         res.status(580).send('Internal Server Error');
+//     }
+// });
 
-app.post('/update/:id', async (req, res) => {
-    try {
-        const productId = req.params.id;
-        const product = await Product.findByPk(productId, {
-            include: [Category, Supplier],
-        });
-        const categories = await Category.findAll();
-        const suppliers = await Supplier.findAl1();
-        res.render('edit-product', {product, categories, suppliers});
-    } catch (error) {
-        console.error('Error fetching product for edit:', error);
-        res.status(580).send('Internal Server Error');
-    }
-});
-
-app.post('/add-category', express.urlencoded({extended: true}), async (req, res) => {
-    const {name} = req.body;
-    if (name) {
-        await Category.create({name});
-    }
+// app.post('/add-category', express.urlencoded({extended: true}), async (req, res) => {
+//     const {name} = req.body;
+//     if (name) {
+//         await Category.create({name});
+//     }
+//
+//
+// });
+// app.post('/add-supplier', express.urlencoded({extended: true}), async (req, res) => {
+//     const {name, contact} = req.body;
+//     if (name) {
+//         await Supplier.create({name, contact});
+//     }
+// });
 
 
-});
-app.post('/add-supplier', express.urlencoded({extended: true}), async (req, res) => {
-    const {name, contact} = req.body;
-    if (name) {
-        await Supplier.create({name, contact});
-    }
-});
-
-
-
-app.post('/add-product', express.urlencoded({extended: true}), async (req, res) => {
-    const {name, price, categoryId, supplierId} = req.body;
-    if (name && price && categoryId && supplierId) {
+app.post('/service', express.urlencoded({extended: true}), async (req, res) => {
+    const {name, price, description = ''} = req.body;
         try {
             await Product.create({
                 name,
+                description,
                 price,
-                Categoryld: categoryId,
-                SupplierId: supplierId,
             });
-            res.redirect('/');
+
+            res.status(200).send({
+                status: true
+            });
         } catch (error) {
             console.error('Error adding product:', error);
             res.status(500).send('Internal Server Error');
         }
-    } else {
-        res.status(400).send('All fields are required');
-    }
 });
 
-app.post('/delete-product/:id', async (req, res) => {
+
+app.delete('/service/:id', async (req, res) => {
     try {
         const productId = req.params.id;
         await Product.destroy({
             where: {id: productId},
         });
-        res.redirect('/');
+        res.status(200).send({
+            status: true
+        });
     } catch (error) {
         console.error('Error deleting product:', error);
         res.status(508).send('Internal Server Error');
     }
 });
 
+app.get('/service/:id', async (req, res) => {
+
+    const productId = req.params.id;
+    const products = await Product.findByPk(productId, {});
+
+    return res.send(products)
+})
+
 app.get('/services', async (req, res) => {
 
     // const productId = req.params.id;
     const products = await Product.findAll({
-        include: [Category, Supplier],
     });
-    // const categories = await Category.findAll();
-    // const suppliers = await Supplier.findAll();
 
 
     return res.send(products)
 })
-app.post('/edit-product/:id', express.urlencoded({extended: true}), async (req, res) => {
+
+app.put('/service/:id', express.urlencoded({extended: true}), async (req, res) => {
     try {
         const productid = req.params.id;
-        const {name, price, categoryId, supplierId} = req.body;
+        const {name, price, description} = req.body;
 
         await Product.update(
-            {name, price, CategoryId: categoryId, SupplierId: supplierId},
+            {name, price, description},
             {where: {id: productid}}
         );
 
-        res.redirect('/');
+        res.status(200).send({
+            status: true
+        });
     } catch (error) {
         console.error('Error updating product:', error);
         res.status(580).send('Internal Server Error');
@@ -203,7 +224,6 @@ app.post('/send-order', express.urlencoded({extended: true}), async (req, res) =
 });
 
 
-
 app.post('/login', async (request, response) => {
     const {login, password} = request.body;
 
@@ -236,6 +256,74 @@ app.post('/login', async (request, response) => {
 });
 
 
+app.post('/blog', express.urlencoded({extended: true}), async (req, res) => {
+    const {heading, description = ''} = req.body;
+    try {
+        await Blog.create({
+            heading,
+            description,
+        });
+
+        res.status(200).send({
+            status: true
+        });
+    } catch (error) {
+        console.error('Error adding product:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.put('/blog/:id', express.urlencoded({extended: true}), async (req, res) => {
+    try {
+        const productid = req.params.id;
+        const {heading, description} = req.body;
+
+        await Blog.update(
+            {heading,  description},
+            {where: {id: productid}}
+        );
+
+        res.status(200).send({
+            status: true
+        });
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(580).send('Internal Server Error');
+    }
+});
+
+
+app.delete('/blog/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        await Blog.destroy({
+            where: {id: productId},
+        });
+        res.status(200).send({
+            status: true
+        });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(508).send('Internal Server Error');
+    }
+});
+
+app.get('/blog/:id', async (req, res) => {
+
+    const productId = req.params.id;
+    const products = await Blog.findByPk(productId, {});
+
+    return res.send(products)
+})
+
+app.get('/blog', async (req, res) => {
+
+    // const productId = req.params.id;
+    const products = await Blog.findAll({});
+
+
+    return res.send(products)
+})
 
 
 
@@ -243,8 +331,6 @@ app.post('/login', async (request, response) => {
 app.listen(port, () => {
     console.log(`Сервер запущен на порту http://localhost:${port}`);
 });
-
-
 
 
 
@@ -264,20 +350,17 @@ async function run() {
                 });
             })});
 
-
-        const categoryl = await Category.create({name: 'иномарка'});
-        const category2 = await Category.create({name: 'отечественные'});
-
-        const supplier1 = await Supplier.create({name: 'TechCorp', contact: 'avto@example.com'});
-        const supplier2 = await Supplier.create({name: 'BookStore', contact: 'contact@f.com'});
-
         await Product.create({
             name: 'Техническое обслуживание',
             price: 1209.99,
-            CategoryId: categoryl.id,
-            SupplierId: supplier1.id
+            description: 'Полное тех обслуживание машины'
+            // CategoryId: categoryl.id,
+            // SupplierId: supplier1.id
         });
-        await Product.create({name: 'Замена масла', price: 799.49, CategoryId: category2.id, SupplierId: supplier1.id});
+        await Product.create({
+            name: 'Замена масла', price: 799.49,
+            description: 'Замена масла и очистка'
+        });
 
 
     } catch (error) {

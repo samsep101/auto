@@ -1,7 +1,7 @@
 import { PUBLIC_BACKEND_URL as backendUrl} from "$env/static/public";
 import {getAuthToken} from "$modules/auth/api";
 import {setCookie} from "$modules/auth/utils";
-
+import { getContext, hasContext, setContext } from "svelte";
 
 
 
@@ -13,9 +13,11 @@ type TAuth = {
 let store = $state<null | TAuth>(null);
 
 
-const isAuthorized = (): boolean => store !== null;
 
+const isAuthorized = (): boolean =>{
 
+    return store !== null;
+}
 
 function encode(data: any): string {
     return JSON.stringify(data)
@@ -80,6 +82,7 @@ const user = $derived(() => {
 // todo убрать отсюда регистрацию и юзера, заменить логин - на getAuth
 export default {
     user: () => user,
+    token: () => store?.token,
     load,
     doLogout,
     isAuthorized: isAuthorized,
