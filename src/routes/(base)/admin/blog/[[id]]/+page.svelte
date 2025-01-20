@@ -1,4 +1,5 @@
-<script lang="ts">
+<script lang="ts" xmlns="http://www.w3.org/1999/html">
+    import EditorJS from '@editorjs/editorjs';
 
     import {page} from "$app/state";
     import {createBlog, createService, fetchBlog, fetchService, updateBlog, updateService} from "$lib/api";
@@ -22,9 +23,25 @@
 
 
 
+    //
+    // let editor;
+    //
+    // let action = () => {
+    //     editor = new EditorJS({
+    //         /**
+    //          * Id of Element that should contain Editor instance
+    //          */
+    //         holder: 'editorjs'
+    //     });
+    //
+    // //     form.description
+    // }
+
 
     const save = async (event: SubmitEvent) => {
         event.preventDefault();
+
+        // form.description = await editor.save()
 
         if (id)
             await updateBlog(id, form);
@@ -34,13 +51,13 @@
 
         goto('/admin/')
     }
+
 </script>
 
 <div class="container mx-auto m-5 flex gap-4">
     <form onsubmit={save} class="flex flex-col gap-2">
         <input type="text" bind:value={form.heading} placeholder="Название" />
-        <input type="text" bind:value={form.description} placeholder="Описание" />
-
+        <textarea bind:value={form.description} placeholder="Описание"></textarea>
 
         <button type="submit">
             Отправить
@@ -60,6 +77,12 @@
 
     form {
         max-width: 600px;
+        height: auto;
         @apply p-4
+    }
+
+    #editorjs {
+        background: white;
+        color: black;
     }
 </style>

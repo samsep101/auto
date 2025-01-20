@@ -1,6 +1,4 @@
 <script>
-    import About from '$lib/images/about.svg';
-
     const {data} = $props();
 
 

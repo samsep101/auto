@@ -41,7 +41,7 @@
                 Добавить услуги
             </h3>
 
-            <table class="table-auto w-full">
+            <table class="table-auto w-full mb-3">
                 <thead class="bg-blue-900">
                 <tr class="p-2">
                     <td class=" p-2 text-center">
@@ -168,7 +168,7 @@
                 Просмотр блогов
             </h3>
 
-            <table class="table-auto w-full">
+            <table class="table-auto w-full mb-3">
                 <thead class="bg-blue-900">
                 <tr class="p-2">
                     <td class="p-2 text-center">
@@ -182,11 +182,11 @@
                 <tbody>
 
                 {#each blogs as service}
-                    <tr class="bg-white text-black even:bg-gray-50 border-b-2 border-b-gray-200">
-                        <td class="p-2 text-center">
+                    <tr class="bg-white text-black even:bg-gray-50 ">
+                        <td class="p-2 text-center border-b-2 border-b-gray-200">
                             {service.heading}
                         </td>
-                        <td class="p-2 text-center">
+                        <td class="p-2 text-center border-b-2 border-b-gray-200">
                             {service.description}
                         </td>
                         <td class="bg-black  w-[20%] text-center">
